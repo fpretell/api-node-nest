@@ -33,3 +33,4 @@ jobs:
     - name: Push docker image
       run: |
         docker push fpretellmdz/api-node-nest:0.0.2
+        docker push fpretellmdz/api-node-nest:latest
