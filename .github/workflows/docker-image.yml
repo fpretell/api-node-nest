@@ -1,0 +1,35 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+      with:
+        fetch-deep: 0
+    - name: Docker login
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USER}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: |
+        echo `Iniciando login --$DOCKER_USER --$DOCKER_PASSWORD`
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+        echo "Fin del login"
+        
+    - name: Build docker image
+      run: |
+        docker build -t fpretellmdz/api-node-nest:0.0.2 .
+        
+    - name: Push docker image
+      run: |
+        docker push fpretellmdz/api-node-nest:0.0.2
