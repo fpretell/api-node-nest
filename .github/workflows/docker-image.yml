@@ -29,6 +29,7 @@ jobs:
     - name: Build docker image
       run: |
         docker build -t fpretellmdz/api-node-nest:0.0.2 .
+        docker build -t fpretellmdz/api-node-nest:latest .
         
     - name: Push docker image
       run: |
