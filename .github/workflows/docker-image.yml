@@ -29,19 +29,22 @@ jobs:
     - name: Docker login
       env:
         DOCKER_USER: ${{secrets.DOCKER_USER}}
-        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-        NEW_VERSION: ${{ steps.version.outputs.version }}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}        
       run: |
         echo `Iniciando login --$DOCKER_USER --$DOCKER_PASSWORD`
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
         echo "Fin del login. Version: $NEW_VERSION"
         
     - name: Build docker image
+      env:
+        NEW_VERSION: ${{ steps.version.outputs.version }}
       run: |
-        docker build -t fpretellmdz/api-node-nest:0.0.2 .
+        docker build -t fpretellmdz/api-node-nest:$NEW_VERSION .
         docker build -t fpretellmdz/api-node-nest:latest .
         
     - name: Push docker image
+      env:
+          NEW_VERSION: ${{ steps.version.outputs.version }}
       run: |
-        docker push fpretellmdz/api-node-nest:0.0.2
+        docker push fpretellmdz/api-node-nest:$NEW_VERSION
         docker push fpretellmdz/api-node-nest:latest
